@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Banda LED</title>
+<style>
+  body {
+    margin: 0;
+    padding: 24px;
+    background: #111;
+    color: #eee;
+    font-family: sans-serif;
+  }
+
+  label {
+    display: block;
+    margin: 24px 0 8px;
+  }
+
+  input {
+    -webkit-appearance: none;
+    appearance: none;
+    display: block;
+    width: min(100%, 500px);
+    height: 28px;
+    margin: 0;
+    border-radius: 14px;
+    background: linear-gradient(to right, #000, #fff);
+  }
+
+  input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #333;
+    box-sizing: border-box;
+  }
+
+  input::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #333;
+    box-sizing: border-box;
+  }
+</style>
+</head>
+<body>
+  <label>Culoare</label>
+  <div id="culoare"></div>
+
+  <label for="luminozitate">Luminozitate</label>
+  <input type="range" id="luminozitate" min="0" max="100" value="30">
+
+  <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+  <script>
+    const asteapta = {};
+
+    function trimite(cale, parametri) {
+      const exista = cale in asteapta;
+      asteapta[cale] = cale + "?" + parametri;
+      if (exista) return;
+
+      setTimeout(() => {
+        fetch(asteapta[cale]);
+        delete asteapta[cale];
+      }, 50);
+    }
+
+    const selector = new iro.ColorPicker("#culoare", {
+      width: Math.min(window.innerWidth - 48, 500),
+      sliderSize: 28,
+      color: "#ff8000",
+      layout: [{ component: iro.ui.Slider, options: { sliderType: "hue" } }],
+    });
+
+    selector.on("color:change", (color) => {
+      const { r, g, b } = color.rgb;
+      trimite("/culoare", "r=" + r + "&g=" + g + "&b=" + b);
+    });
+
+    const luminozitate = document.getElementById("luminozitate");
+
+    luminozitate.addEventListener("input", () => {
+      trimite("/luminozitate", "v=" + luminozitate.value);
+    });
+  </script>
+</body>
+</html>
