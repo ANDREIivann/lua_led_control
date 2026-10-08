@@ -2,6 +2,7 @@
 
 Acest proiect reprezinta un sistem de control, scris in Lua, pentru o banda LED din casa. De pe telefon se poate schimba in timp real culoarea si luminozitatea benzii. Pe un Raspberry Pi ruleaza un program Lua care serveste o pagina web de control si trimite catre ESP8266, prin UDP, cu o frecventa de 30 fps, culoarea si luminozitatea ce vor fi afisate pe LED-uri.
 
+https://github.com/user-attachments/assets/bbb7fb4c-47da-49be-ae81-e93dd70d9d6b
 
 ## Componente hardware
 
